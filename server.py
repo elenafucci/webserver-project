@@ -18,7 +18,9 @@ def log(method, path, status):
 def build_response(status_code, body=b"", content_type="text/html"):
     reason = {
         200: "OK",
+        403: "Forbidden",
         404: "Not Found",
+        405: "Method Not Allowed",
     }.get(status_code, "Unknown")
 
     headers = (
@@ -54,10 +56,13 @@ def handle_client(client_socket):
         request_line = request.splitlines()[0]
         parts = request_line.split()
 
+        if len(parts) < 2:
+            return
+
         method, path = parts[0], parts[1]
 
         if method != 'GET':
-            response = build_response(405, b"<h1>405 Method Not Allowed</h1>")
+            response = build_response(405, b"<h1>405 Method Not Allowed</h1>", "text/html")
             client_socket.sendall(response)
             log(method, path, 405)
             return
@@ -66,6 +71,15 @@ def handle_client(client_socket):
             path = '/index.html'
 
         requested_path = os.path.normpath(os.path.join(DOCUMENT_ROOT, path.lstrip('/')))
+        abs_document_root = os.path.abspath(DOCUMENT_ROOT)
+        abs_requested_path = os.path.abspath(requested_path)
+
+        # Protezione contro il path traversal
+        if not abs_requested_path.startswith(abs_document_root):
+            response = build_response(403, b"<h1>403 Forbidden</h1>", "text/html")
+            client_socket.sendall(response)
+            log(method, path, 403)
+            return
 
         if os.path.isfile(requested_path):
             with open(requested_path, 'rb') as f:
