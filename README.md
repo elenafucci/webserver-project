@@ -21,8 +21,8 @@ Realizzare un semplice server HTTP utilizzando Python e il modulo `socket`. Il s
 ## Contenuti del sito statico  
 La cartella `www/` include almeno 3 pagine HTML, ad esempio:  
 - `index.html` (pagina principale)  
-- `about.html` (pagina informativa)  
-- `contact.html` (pagina di contatto)  
+- `maglie.html` 
+- `pantaloni.html`  
 È presente anche un file CSS (`style.css`) per la formattazione.
 
 ## Funzionamento del server  
@@ -33,11 +33,11 @@ La cartella `www/` include almeno 3 pagine HTML, ad esempio:
 5. Registra la richiesta con data, metodo, risorsa e codice risposta
 
 ## Esempio di log generati
-[2025-06-25 09:52:27] GET /index.html -> 200
-[2025-06-25 09:52:27] GET /css/style.css -> 200
-[2025-06-25 09:52:27] GET /img/maglie.png -> 200
-[2025-06-25 09:52:29] GET /img/maglie/maglia1.png -> 200
-[2025-06-25 09:52:32] GET /maglie/maglia1.html -> 404
+[2025-06-25 09:52:27] GET /index.html -> 200  
+[2025-06-25 09:52:27] GET /css/style.css -> 200  
+[2025-06-25 09:52:27] GET /img/maglie.png -> 200  
+[2025-06-25 09:52:29] GET /img/maglie/maglia1.png -> 200  
+[2025-06-25 09:52:32] GET /maglie/maglia1.html -> 404  
 
 ## Risultati  
 Il server risponde correttamente alle richieste GET e serve le pagine con gli stili CSS applicati. Le pagine inesistenti restituiscono l’errore 404 personalizzato.
